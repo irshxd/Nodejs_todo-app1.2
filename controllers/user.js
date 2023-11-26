@@ -2,6 +2,8 @@ import { status } from "init";
 import { User } from "../models/user.js"
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken";
+import init from 'init';
+
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
