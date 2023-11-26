@@ -5,11 +5,6 @@ import { isAuthenticated } from "../middlewere/auth.js";
 
 const router = express.Router();
 
-
-router.get('/',(req,res)=>{
-    res.send("page started");
-    })
-
 router.post('/register',register);
 
 router.post('/login',login);
