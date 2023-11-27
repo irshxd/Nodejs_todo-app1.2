@@ -1,9 +1,8 @@
-import { status } from "init";
-import { User } from "../models/user.js"
-import bcrypt from 'bcrypt'
+// import React from 'react'
+import { User } from "../models/user.js";
+import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 import init from 'init';
-
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -31,8 +30,8 @@ export const register = async (req, res) => {
     res.status(201).cookie('token', token, {
       httpOnly: true,
       maxAge: 15 * 60 * 1000,
-      sameSite:process.env.NODE_ENV==='development'?'lax':'none',
-      secure:process.env.NODE_ENV==='development'?flase:true,
+      sameSite: process.env.NODE_ENV === 'development' ? 'lax' : 'none',
+      secure: process.env.NODE_ENV === 'development' ? false : true,
     }).json({
       success: true,
       message: 'Registered',
@@ -45,6 +44,7 @@ export const register = async (req, res) => {
     });
   }
 };
+
 // login route
 export const login = async (req, res) => {
     const { email, password } = req.body;
@@ -73,6 +73,8 @@ export const login = async (req, res) => {
       res.status(200).cookie('token', token, {
         httpOnly: true,
         maxAge: 15 * 60 * 1000,
+        sameSite: process.env.NODE_ENV === 'development' ? 'lax' : 'none',
+        secure: process.env.NODE_ENV === 'development' ? false : true,
       }).json({
         success: true,
         message: `Welcome back ${user.name}`,
@@ -85,27 +87,28 @@ export const login = async (req, res) => {
         message: 'Internal Server Error',
       });
     }
-  };
+};
   
 // my profile
-export const myProfile =(req,res)=>{
-res.status(200).json({
-    success:true,
-    user:req.user,
-})
-}
+export const myProfile = (req, res) => {
+  res.status(200).json({
+    success: true,
+    user: req.user,
+  });
+};
 
 export const logout = (req, res) => {
-    res.status(200)
-      .cookie('token', null, {
-        httpOnly: true,
-        expires: new Date(0), // Setting the expiration date to a past date
-        sameSite:process.env.NODE_ENV==='development'?'lax':'none',
-      secure:process.env.NODE_ENV==='development'?flase:true,
-      })
-      .json({
-        success: true,
-        user: req.user, // Assuming you have set req.user somewhere in your authentication middleware
-      });
-  };
+  res.status(204) // instead of res.status(200)
+    .cookie('token', null, {
+      httpOnly: true,
+      expires: new Date(0),
+      sameSite: process.env.NODE_ENV === 'development' ? 'lax' : 'none',
+      secure: process.env.NODE_ENV === 'development' ? false : true,
+    })
+    .json({
+      success: true,
+      user: req.user,
+    });
+};
+
   
